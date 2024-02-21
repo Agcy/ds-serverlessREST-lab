@@ -27,5 +27,10 @@
   "exclude": [
     "node_modules",
     "cdk.out"
+  ],
+  "include": [
+    "shared/*.ts",
+    "shared/*.tsx",
+    "shared/*.json"
   ]
 }
