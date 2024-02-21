@@ -40,7 +40,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     if (includeCast) {
       const castCommandOutput = await ddbDocClient.send(
         new QueryCommand({
-          TableName: "YourCastTableName",
+          TableName: process.env.MOVIE_CAST_TABLE,
           KeyConditionExpression: "movieId = :movieId",
           ExpressionAttributeValues: {
             ":movieId": movieId,

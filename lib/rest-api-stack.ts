@@ -39,18 +39,21 @@ export class RestAPIStack extends cdk.Stack {
     const getMovieByIdFn = new lambdanode.NodejsFunction(
       this,
       "GetMovieByIdFn",
-      {
-        architecture: lambda.Architecture.ARM_64,
-        runtime: lambda.Runtime.NODEJS_18_X,
-        entry: `${__dirname}/../lambdas/getMovieById.ts`,
-        timeout: cdk.Duration.seconds(10),
-        memorySize: 128,
-        environment: {
-          TABLE_NAME: moviesTable.tableName,
-          REGION: 'eu-west-1',
-        },
-      }
+        {
+          architecture: lambda.Architecture.ARM_64,
+          runtime: lambda.Runtime.NODEJS_18_X,
+          entry: `${__dirname}/../lambdas/getMovieById.ts`,
+          timeout: cdk.Duration.seconds(10),
+          memorySize: 128,
+          environment: {
+            TABLE_NAME: moviesTable.tableName,
+            MOVIE_CAST_TABLE: movieCastsTable.tableName,
+            REGION: 'eu-west-1',
+          },
+        }
       );
+
+      movieCastsTable.grantReadData(getMovieByIdFn);
       
       const getAllMoviesFn = new lambdanode.NodejsFunction(
         this,
