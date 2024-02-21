@@ -1,5 +1,3 @@
-// file: lambdas/deleteMovie.ts
-
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, DeleteCommand } from "@aws-sdk/lib-dynamodb";
@@ -8,7 +6,6 @@ const ddbDocClient = createDDbDocClient();
 
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   try {
-    // Extract movieID from pathParameters
     const movieID = event.pathParameters ? event.pathParameters.movieID : null;
     if (!movieID) {
       return {
@@ -20,7 +17,6 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
       };
     }
 
-    // Delete movie from DynamoDB table
     const commandOutput = await ddbDocClient.send(
       new DeleteCommand({
         TableName: process.env.TABLE_NAME,
@@ -30,7 +26,6 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
       })
     );
 
-    // If no item was deleted, respond with 404
     if (!commandOutput.Attributes) {
       return {
         statusCode: 404,
@@ -41,7 +36,6 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
       };
     }
 
-    // Respond with success message
     return {
       statusCode: 200,
       headers: {
